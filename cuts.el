@@ -41,14 +41,14 @@
 ;;; cuts functions
 ;; get tags for each category
 (defun cuts->get-tags (category)
-  (let ((fpath (concat depot category)))
+  (let ((dir (concat depot category)))
     (mapcar (lambda (tag)
-              `((id . ,fpath)
+              `((id . ,(concat dir "/" tag))
                 (category . ,category)
                 (tag . ,tag)
-                (last-modified . ,(get-last-modified fpath))))
+                (last-modified . ,(get-last-modified dir))))
             ;; get rid of "." ".."
-            (cddr (directory-files fpath)))))
+            (cddr (directory-files dir)))))
 
 ;; get all tags from all categories
 (defun cuts->get-all-tags ()
@@ -59,16 +59,53 @@
 (bui-define-interface cuts list
   :buffer-name "*Cuts*"
   :get-entries-function 'cuts->get-all-tags
-  :format '((category nil 30 t)
+  :format '((category nil 20 t)
             (tag nil 30 t)
             (last-modified nil 30 t))
   :sort-key '(tag))
 
-;; define interactive function to call
+;; switch to folder
+(defun cuts->switch-to-folder ()
+  (interactive)
+  (dired (bui-list-current-id)))
+
+;; kill marked tags or the current tag
+(defun cuts->kill-tags ()
+  (interactive)
+  (if (y-or-n-p "Are you sure you want to delete the selected tag(s)?")
+      (progn
+        (dolist (tag (or (bui-list-get-marked-id-list)
+                         (list (bui-list-current-id))))
+          (delete-directory tag t))
+        (revert-buffer nil t))))
+
+;; note that this mode map is created by default based on the
+;; definition of 'cuts 'list
+(let ((map cuts-list-mode-map))
+  (define-key map (kbd "RET") 'cuts->switch-to-folder)
+  (define-key map (kbd "k")   'cuts->kill-tags))
+
+;;; interactive functions
+;; list all tags
 (defun cuts-show-tags ()
   "Display a list of buffers."
   (interactive)
   (bui-get-display-entries 'cuts 'list))
+
+;; switch to folder
+(defun cuts->switch-to-folder ()
+  (interactive)
+  (dired (bui-list-current-id)))
+
+;; kill marked tags or the current tag
+(defun cuts->kill-tags ()
+  (interactive)
+  (if (y-or-n-p "Are you sure you want to delete the selected tag(s)?")
+      (progn
+        (dolist (tag (or (bui-list-get-marked-id-list)
+                         (list (bui-list-current-id))))
+          (delete-directory tag t))
+        (revert-buffer nil t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; cuts.el ends here
