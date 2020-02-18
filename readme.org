@@ -1,0 +1,2 @@
+* cuts.el
+A utility library for working with act cuts in emacs, for my laziness obviously.
