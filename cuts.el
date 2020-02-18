@@ -32,9 +32,16 @@
 (setq categories '("Calibration" "Pathologies" "Postprocess" "SelectedTODs" "TODCuts" "darkDets"))
 
 ;;; utility functions
+;; get last modified
+(defun get-last-modified (file)
+  "Returns the last modified date of a FILE."
+  (format-time-string "%Y-%m-%d %T"
+                      (nth 5 (file-attributes file))))
+
+;;; cuts functions
 ;; get tags for each category
 (defun cuts->get-tags (category)
-  (mapcar (lambda (tag) `(,category ,tag ,(get-last-modified (concat depot category))))
+  (mapcar (lambda (tag) `((category . ,category) (tag . ,tag) (last-modified . ,(get-last-modified (concat depot category)))))
           (cddr (directory-files
                  (concat depot category)))))
 
@@ -43,30 +50,14 @@
   (-flatten-n 1 (mapcar (lambda (category) (cuts->get-tags category))
                         categories)))
 
-;; get each tabulated entry
-(defun cuts->entry (entry)
-  `((category . ,(car entry))
-    (tag . ,(cadr entry))
-    (last-modified . ,(last entry))))
-
-;; get all tabulated entry
-(defun cuts->get-entries ()
-  (mapcar 'cuts->entry (cuts->get-all-tags)))
-
-;; get last modified
-(defun get-last-modified (file)
-  "Returns the last modified date of a FILE."
-  (format-time-string "%Y-%m-%d %T"
-                      (nth 5 (file-attributes file))))
-
 ;; define bui interface
 (bui-define-interface cuts list
   :buffer-name "*Cuts*"
-  :get-entries-function 'cuts->get-entries
+  :get-entries-function 'cuts->get-all-tags
   :format '((category nil 30 t)
             (tag nil 30 t)
             (last-modified nil 30 t))
-  :sort-key '(last-modified))
+  :sort-key '(tag))
 
 ;; define interactive function to call
 (defun cuts-show-tags ()
