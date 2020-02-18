@@ -41,9 +41,14 @@
 ;;; cuts functions
 ;; get tags for each category
 (defun cuts->get-tags (category)
-  (mapcar (lambda (tag) `((category . ,category) (tag . ,tag) (last-modified . ,(get-last-modified (concat depot category)))))
-          (cddr (directory-files
-                 (concat depot category)))))
+  (let ((fpath (concat depot category)))
+    (mapcar (lambda (tag)
+              `((id . ,fpath)
+                (category . ,category)
+                (tag . ,tag)
+                (last-modified . ,(get-last-modified fpath))))
+            ;; get rid of "." ".."
+            (cddr (directory-files fpath)))))
 
 ;; get all tags from all categories
 (defun cuts->get-all-tags ()
