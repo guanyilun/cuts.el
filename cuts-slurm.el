@@ -26,14 +26,16 @@
 (require 'bui)
 
 ;;; user defined parameters
-(setq slurm-user "ering")
+(setq slurm-user "yilung")
 
-;; (setq slurm-jobs-command
-;;       (concat "squeue -u "
-;;               slurm-user
-;;               " | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}'"))
+;; command to see your jobs
+(setq slurm-jobs-command
+      (concat "squeue -u "
+              slurm-user
+              " | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}'"))
 
-(setq slurm-jobs-command "squeue | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}'")
+;; if you want to see all jobs instead
+;; (setq slurm-jobs-command "squeue | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}'")
 
 ;;; utility functions
 (defun kill-slurm-job (job-id)
