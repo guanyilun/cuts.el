@@ -1,4 +1,13 @@
 * cuts.el
 A utility library for working with act cuts in emacs, for my laziness obviously.
 
+** What's included
+- cuts-depot: manage cuts depot
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot.png]]
+- cuts-slurm: manage slurm jobs
+[[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_2.png]]
+
+** Dependencies
+- =bui.el=
+- =dash.el=
+- =s.el=
