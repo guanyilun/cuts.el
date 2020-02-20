@@ -1,4 +1,4 @@
-;;; cuts.el --- Cuts utilities plugin for emacs  -*- lexical-binding: t -*-
+;;; cuts-depot.el --- Cuts depot plugin for emacs  -*- lexical-binding: t -*-
 
 ;; Copyright © 2020 Yilun Guan <yilun.guan@pitt.edu>
 
@@ -18,7 +18,7 @@
 ;;; Commentary:
 
 ;; This code aims to provide a few useful utility function for dealing
-;; with cuts results
+;; with cuts depot such as deleting and navigating.
 
 ;;; Code:
 
@@ -38,39 +38,39 @@
   (format-time-string "%Y-%m-%d %T"
                       (nth 5 (file-attributes file))))
 
-;;; cuts functions
+;;; cuts depot functions
 ;; get tags for each category
-(defun cuts->get-tags (category)
+(defun cuts-depot->get-tags (category)
   (let ((dir (concat depot category)))
     (mapcar (lambda (tag)
               `((id . ,(concat dir "/" tag))
                 (category . ,category)
                 (tag . ,tag)
-                (last-modified . ,(get-last-modified dir))))
+                (last-modified . ,(get-last-modified (concat dir "/" tag)))))
             ;; get rid of "." ".."
             (cddr (directory-files dir)))))
 
 ;; get all tags from all categories
-(defun cuts->get-all-tags ()
-  (-flatten-n 1 (mapcar (lambda (category) (cuts->get-tags category))
+(defun cuts-depot->get-all-tags ()
+  (-flatten-n 1 (mapcar (lambda (category) (cuts-depot->get-tags category))
                         categories)))
 
 ;; define bui interface
-(bui-define-interface cuts list
-  :buffer-name "*Cuts*"
-  :get-entries-function 'cuts->get-all-tags
+(bui-define-interface cuts-depot list
+  :buffer-name "*Cuts Depot*"
+  :get-entries-function 'cuts-depot->get-all-tags
   :format '((category nil 20 t)
             (tag nil 30 t)
             (last-modified nil 30 t))
   :sort-key '(tag))
 
 ;; switch to folder
-(defun cuts->switch-to-folder ()
+(defun cuts-depot->switch-to-folder ()
   (interactive)
   (dired (bui-list-current-id)))
 
 ;; kill marked tags or the current tag
-(defun cuts->kill-tags ()
+(defun cuts-depot->kill-tags ()
   (interactive)
   (if (y-or-n-p "Are you sure you want to delete the selected tag(s)?")
       (progn
@@ -81,24 +81,24 @@
 
 ;; note that this mode map is created by default based on the
 ;; definition of 'cuts 'list
-(let ((map cuts-list-mode-map))
-  (define-key map (kbd "RET") 'cuts->switch-to-folder)
-  (define-key map (kbd "k")   'cuts->kill-tags))
+(let ((map cuts-depot-list-mode-map))
+  (define-key map (kbd "RET") 'cuts-depot->switch-to-folder)
+  (define-key map (kbd "k")   'cuts-depot->kill-tags))
 
 ;;; interactive functions
 ;; list all tags
-(defun cuts-show-tags ()
+(defun cuts-depot-show-tags ()
   "Display a list of buffers."
   (interactive)
-  (bui-get-display-entries 'cuts 'list))
+  (bui-get-display-entries 'cuts-depot 'list))
 
 ;; switch to folder
-(defun cuts->switch-to-folder ()
+(defun cuts-depot->switch-to-folder ()
   (interactive)
   (dired (bui-list-current-id)))
 
 ;; kill marked tags or the current tag
-(defun cuts->kill-tags ()
+(defun cuts-depot->kill-tags ()
   (interactive)
   (if (y-or-n-p "Are you sure you want to delete the selected tag(s)?")
       (progn
@@ -108,4 +108,4 @@
         (revert-buffer nil t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; cuts.el ends here
+;;; cuts-depot.el ends here
