@@ -43,7 +43,6 @@
   (mapcar 'cuts-run->get-entry
           (cdr (s-split "\n" (shell-command-to-string cuts-run-list-command) t))))
 
-(cuts-run->get-all-entries)
 ;; define bui interface
 (bui-define-interface cuts-run list
   :buffer-name "*Cuts Run*"
@@ -54,6 +53,14 @@
             (percent nil 10 t)
             (slurm-summary nil 20 t))
   :sort-key '(tag))
+
+;; define keymap
+(let ((map cuts-run-list-mode-map))
+  (define-key map (kbd "RET") 'cuts-run->switch-to-file)
+  (define-key map (kbd "p")   'cuts-run->promote-version)
+  (define-key map (kbd "k")   'cuts-run->kill-version)
+  (define-key map (kbd "s")   'cuts-run->submit-job)
+  (define-key map (kbd "c")   'cuts-run->combine-jobs))
 
 ;;; interactive functions
 (defun cuts-run->switch-to-file ()
@@ -82,11 +89,25 @@
           (delete-file (s-replace "cutp" "cutP" cpar)))
         (revert-buffer nil t))))
 
-;; define keymap
-(let ((map cuts-run-list-mode-map))
-  (define-key map (kbd "RET") 'cuts-run->switch-to-file)
-  (define-key map (kbd "p")   'cuts-run->promote-version)
-  (define-key map (kbd "k")   'cuts-run->kill-version))
+(defun cuts-run->submit-job ()
+  "submit jobs of the given param of selected tags"
+  (interactive)
+  (if (y-or-n-p "Are you sure you want to submit jobs of selected tag(s)?")
+      (progn
+        (dolist (cpar (or (bui-list-get-marked-id-list)
+                          (list (bui-list-current-id))))
+          (shell-command (concat "cuts run submit " cpar)))
+        (revert-buffer nil t))))
+
+(defun cuts-run->combine-jobs ()
+  "combine the mpi sub-jobs of a given run of selected tags"
+  (interactive)
+  (if (y-or-n-p "Are you sure you want to combine sub-jobs of the selected tag(s)?")
+      (progn
+        (dolist (cpar (or (bui-list-get-marked-id-list)
+                          (list (bui-list-current-id))))
+          (shell-command (concat "cuts results combine " cpar)))
+        (revert-buffer nil t))))
 
 ;;;###autoload
 (defun cuts-run-show-tags ()
