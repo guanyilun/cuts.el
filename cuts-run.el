@@ -48,7 +48,7 @@
   :buffer-name "*Cuts Run*"
   :get-entries-function 'cuts-run->get-all-entries
   :format '((tag nil 20 t)
-            (name nil 15 t)
+            (name nil 20 t)
             (progress nil 10 t)
             (percent nil 10 t)
             (slurm-summary nil 20 t))
@@ -57,16 +57,23 @@
 ;; define keymap
 (let ((map cuts-run-list-mode-map))
   (define-key map (kbd "RET") 'cuts-run->switch-to-file)
-  (define-key map (kbd "p")   'cuts-run->promote-version)
+  (define-key map (kbd "P")   'cuts-run->promote-version)
   (define-key map (kbd "k")   'cuts-run->kill-version)
-  (define-key map (kbd "s")   'cuts-run->submit-job)
-  (define-key map (kbd "c")   'cuts-run->combine-jobs))
+  (define-key map (kbd "S")   'cuts-run->submit-job)
+  (define-key map (kbd "c")   'cuts-run->combine-jobs)
+  (define-key map (kbd "o")   'cuts-run->switch-to-folder))
 
 ;;; interactive functions
 (defun cuts-run->switch-to-file ()
   "Switch to a given file"
   (interactive)
   (find-file (bui-list-current-id)))
+
+;;; interactive functions
+(defun cuts-run->switch-to-folder ()
+  "Switch to the given folder"
+  (interactive)
+  (dired (file-name-directory (bui-list-current-id))))
 
 (defun cuts-run->promote-version ()
   "Promote param version of selected tag"
