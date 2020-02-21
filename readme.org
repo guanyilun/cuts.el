@@ -6,6 +6,9 @@ A utility library for working with act cuts in emacs, for my laziness obviously.
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot.png]]
 - cuts-slurm: manage slurm jobs
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_2.png]]
+- cuts-run: manage cuts parameters
+[[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_3.png]]
+
 
 ** Dependencies
 - =bui.el=
