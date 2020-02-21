@@ -10,12 +10,12 @@ A utility library for working with act cuts in emacs, for my laziness obviously.
   - k: cancel jobs
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_2.png]]
 - cuts-run: manage cuts parameters
-[[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_3.png]]
   - enter: visit the cutparam file
   - k: remove selected cut parameter version
   - p: promote the cut parameter to new version
   - s: submit slurm jobs
   - c: combine sub-job results
+[[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_3.png]]
 
 Other shortcuts that work for all of them
 - h: help
