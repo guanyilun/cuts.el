@@ -87,6 +87,7 @@
 
 ;;; interactive functions
 ;; list all tags
+;;;###autoload
 (defun cuts-depot-show-tags ()
   "Display a list of buffers."
   (interactive)
@@ -107,5 +108,6 @@
           (delete-directory tag t))
         (revert-buffer nil t))))
 
+(provide 'cuts-depot)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; cuts-depot.el ends here

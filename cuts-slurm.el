@@ -82,6 +82,7 @@
 
 ;;; interactive functions
 ;; list all tags
+;;;###autoload
 (defun cuts-slurm-show-jobs ()
   "Display a list of buffers."
   (interactive)
@@ -97,5 +98,6 @@
           (kill-slurm-job job))
         (revert-buffer nil t))))
 
+(provide 'cuts-slurm)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; cuts-slurm.el ends here
