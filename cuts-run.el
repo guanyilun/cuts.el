@@ -59,6 +59,7 @@
   (define-key map (kbd "RET") 'cuts-run->switch-to-folder)
   (define-key map (kbd "P")   'cuts-run->promote-version)
   (define-key map (kbd "k")   'cuts-run->kill-version)
+  (define-key map (kbd "x")   'cuts-run->kill-version)
   (define-key map (kbd "S")   'cuts-run->submit-job)
   (define-key map (kbd "c")   'cuts-run->combine-jobs)
   (define-key map (kbd "o")   'cuts-run->switch-to-cutparam)

@@ -4,18 +4,19 @@ A utility library for working with act cuts in emacs, for my laziness obviously.
 ** What's included
 *** cuts-depot
 Manage cuts depot
-- k: remove results from the selected tag(s)
+- k/x: remove results from the selected tag(s)
 - enter: visit results directory
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot.png]]
 *** cuts-slurm
 Manage slurm jobs
-- k: cancel jobs
+- k/x: cancel jobs
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_2.png]]
 *** cuts-run
 manage cuts parameters
-- enter: visit the cutparam file
-- o: visit cut parameter folder
-- k: remove selected cut parameter version
+- enter: visit the cutparam folder
+- o: visit cutparam file
+- O: visit cutParam file
+- k/x: remove selected cut parameter version
 - P: promote the cut parameter to new version
 - S: submit slurm jobs
 - c: combine sub-job results
