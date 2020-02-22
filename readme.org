@@ -2,29 +2,46 @@
 A utility library for working with act cuts in emacs, for my laziness obviously.
 
 ** What's included
-- cuts-depot: manage cuts depot
-  - k: remove results from the selected tag(s)
-  - enter: visit results directory
+*** cuts-depot
+Manage cuts depot
+- k: remove results from the selected tag(s)
+- enter: visit results directory
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot.png]]
-- cuts-slurm: manage slurm jobs
-  - k: cancel jobs
+*** cuts-slurm
+Manage slurm jobs
+- k: cancel jobs
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_2.png]]
-- cuts-run: manage cuts parameters
-  - enter: visit the cutparam file
-  - o: visit cut parameter folder
-  - k: remove selected cut parameter version
-  - P: promote the cut parameter to new version
-  - S: submit slurm jobs
-  - c: combine sub-job results
+*** cuts-run
+manage cuts parameters
+- enter: visit the cutparam file
+- o: visit cut parameter folder
+- k: remove selected cut parameter version
+- P: promote the cut parameter to new version
+- S: submit slurm jobs
+- c: combine sub-job results
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_3.png]]
-
-Other shortcuts that work for all of them
+*** Other shortcuts that work for all of them
 - h: help
 - m: mark selections
 - u: unmark selections
 - s: sort by fields
 - n: next entry
 - p: previous entry
+
+** How I import them
+Suppose you placed this repo at =~/.emacs.d/site-lisp/cuts.el/=, add these to your =.emacs= or =.emacs.d/init.el=
+#+BEGIN_SRC elisp
+;; add the path of cuts plugin to load path
+(add-to-list 'load-path "~/.emacs.d/site-lisp/cuts.el")
+
+(require 'cuts-slurm)
+(require 'cuts-depot)
+(require 'cuts-run)
+
+(bind-key "<f7>" 'cuts-run-show-tags)
+(bind-key "<f8>" 'cuts-slurm-show-jobs)
+(bind-key "<f9>" 'cuts-depot-show-tags) 
+#+END_SRC
 
 ** Dependencies
 - =bui.el=
