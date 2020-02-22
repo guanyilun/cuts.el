@@ -83,7 +83,6 @@
 ;; definition of 'cuts 'list
 (let ((map cuts-depot-list-mode-map))
   (define-key map (kbd "RET") 'cuts-depot->switch-to-folder)
-  (define-key map (kbd "k")   'cuts-depot->kill-tags)
   (define-key map (kbd "x")   'cuts-depot->kill-tags))
 
 ;;; interactive functions

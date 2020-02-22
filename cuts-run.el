@@ -58,10 +58,10 @@
 (let ((map cuts-run-list-mode-map))
   (define-key map (kbd "RET") 'cuts-run->switch-to-folder)
   (define-key map (kbd "P")   'cuts-run->promote-version)
-  (define-key map (kbd "k")   'cuts-run->kill-version)
   (define-key map (kbd "x")   'cuts-run->kill-version)
   (define-key map (kbd "S")   'cuts-run->submit-job)
   (define-key map (kbd "c")   'cuts-run->combine-jobs)
+  (define-key map (kbd "e")   'cuts-run->show-errors)
   (define-key map (kbd "o")   'cuts-run->switch-to-cutparam)
   (define-key map (kbd "O")   'cuts-run->switch-to-cutParam))
 
@@ -76,11 +76,14 @@
   (interactive)
   (find-file (s-replace "cutp" "cutP" (bui-list-current-id))))
 
-;;; interactive functions
 (defun cuts-run->switch-to-folder ()
   "Switch to the given folder"
   (interactive)
   (dired (file-name-directory (bui-list-current-id))))
+
+(defun cuts-run->show-errors ()
+  (interactive)
+  (shell-command (concat "cuts run errors " (bui-list-current-id))))
 
 (defun cuts-run->promote-version ()
   "Promote param version of selected tag"

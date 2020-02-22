@@ -78,7 +78,6 @@
 
 ;; define keymap
 (let ((map cuts-slurm-list-mode-map))
-  (define-key map (kbd "k") 'cuts-slurm->kill-jobs)
   (define-key map (kbd "x") 'cuts-slurm->kill-jobs))
 
 ;;; interactive functions
