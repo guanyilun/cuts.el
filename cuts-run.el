@@ -41,7 +41,7 @@
 
 (defun cuts-run->get-all-entries ()
   (mapcar 'cuts-run->get-entry
-          (cdr (s-split "\n" (shell-command-to-string cuts-run-list-command) t))))
+          (s-split "\n" (shell-command-to-string cuts-run-list-command) t)))
 
 ;; define bui interface
 (bui-define-interface cuts-run list
@@ -56,18 +56,24 @@
 
 ;; define keymap
 (let ((map cuts-run-list-mode-map))
-  (define-key map (kbd "RET") 'cuts-run->switch-to-file)
+  (define-key map (kbd "RET") 'cuts-run->switch-to-folder)
   (define-key map (kbd "P")   'cuts-run->promote-version)
   (define-key map (kbd "k")   'cuts-run->kill-version)
   (define-key map (kbd "S")   'cuts-run->submit-job)
   (define-key map (kbd "c")   'cuts-run->combine-jobs)
-  (define-key map (kbd "o")   'cuts-run->switch-to-folder))
+  (define-key map (kbd "o")   'cuts-run->switch-to-cutparam)
+  (define-key map (kbd "O")   'cuts-run->switch-to-cutParam))
 
 ;;; interactive functions
-(defun cuts-run->switch-to-file ()
-  "Switch to a given file"
+(defun cuts-run->switch-to-cutparam ()
+  "Switch to a given cutparam"
   (interactive)
   (find-file (bui-list-current-id)))
+
+(defun cuts-run->switch-to-cutParam ()
+  "Switch to a given cutParam"
+  (interactive)
+  (find-file (s-replace "cutp" "cutP" (bui-list-current-id))))
 
 ;;; interactive functions
 (defun cuts-run->switch-to-folder ()
