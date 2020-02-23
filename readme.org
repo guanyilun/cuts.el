@@ -21,6 +21,7 @@ manage cuts parameters
 - S: submit slurm jobs
 - c: combine sub-job results
 - e: view errors in the run
+- F: run default postprocessing
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_3.png]]
 *** Other shortcuts that work for all of them
 - h: help

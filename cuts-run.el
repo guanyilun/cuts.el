@@ -63,7 +63,8 @@
   (define-key map (kbd "c")   'cuts-run->combine-jobs)
   (define-key map (kbd "e")   'cuts-run->show-errors)
   (define-key map (kbd "o")   'cuts-run->switch-to-cutparam)
-  (define-key map (kbd "O")   'cuts-run->switch-to-cutParam))
+  (define-key map (kbd "O")   'cuts-run->switch-to-cutParam)
+  (define-key map (kbd "F")   'cuts-run->postprocess))
 
 ;;; interactive functions
 (defun cuts-run->switch-to-cutparam ()
@@ -125,6 +126,15 @@
                           (list (bui-list-current-id))))
           (shell-command (concat "cuts results combine " cpar)))
         (revert-buffer nil t))))
+
+(defun cuts-run->postprocess ()
+  (interactive)
+  (if (y-or-n-p "Are you sure you want to run postprocessing on the selected tag(s)?")
+      (progn
+        (dolist (cpar (or (bui-list-get-marked-id-list)
+                          (list (bui-list-current-id))))
+          (let ((cutdir (file-name-directory cpar)))
+            (shell-command (concat "cd " cutdir "; cutspipe post.ini")))))))
 
 ;;;###autoload
 (defun cuts-run-show-tags ()
