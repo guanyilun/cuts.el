@@ -57,14 +57,17 @@
 ;; define keymap
 (let ((map cuts-run-list-mode-map))
   (define-key map (kbd "RET") 'cuts-run->switch-to-folder)
+  (define-key map (kbd "[")   'cuts-run->switch-to-rundir)
   (define-key map (kbd "P")   'cuts-run->promote-version)
   (define-key map (kbd "x")   'cuts-run->kill-version)
   (define-key map (kbd "S")   'cuts-run->submit-job)
   (define-key map (kbd "c")   'cuts-run->combine-jobs)
-  (define-key map (kbd "e")   'cuts-run->show-errors)
+  (define-key map (kbd "e")   'cuts-run->switch-to-eshell)
+  (define-key map (kbd "E")   'cuts-run->show-errors)
   (define-key map (kbd "o")   'cuts-run->switch-to-cutparam)
   (define-key map (kbd "O")   'cuts-run->switch-to-cutParam)
-  (define-key map (kbd "F")   'cuts-run->postprocess))
+  (define-key map (kbd "F")   'cuts-run->postprocess)
+  (define-key map (kbd "f")   'cuts-run->switch-to-post-ini))
 
 ;;; interactive functions
 (defun cuts-run->switch-to-cutparam ()
@@ -82,7 +85,34 @@
   (interactive)
   (dired (file-name-directory (bui-list-current-id))))
 
+(defun cuts-run->switch-to-eshell ()
+  "Open eshell in the given folder"
+  (interactive)
+  (let ((default-directory (file-name-directory (bui-list-current-id))))
+    (eshell)
+    (insert "ls")
+    (eshell-send-input)))
+
+(defun cuts-run->switch-to-rundir ()
+  "Open rundir in dired"
+  (interactive)
+  (let* ((cpar (bui-list-current-id))
+         (ver (substring (car (s-split "\\.par" cpar)) -1))
+         (basedir (file-name-directory cpar))
+         (rundir (concat basedir "/run_v" ver)))
+    (dired rundir)))
+
+(defun cuts-run->switch-to-post-ini ()
+  "Open post.ini in the given tag"
+  (interactive)
+  (let* ((cpar (bui-list-current-id))
+         (basedir (file-name-directory cpar))
+         (target (concat basedir "/post.ini")))
+    (find-file target)))
+
+
 (defun cuts-run->show-errors ()
+  "Show errors in the slurm logs"
   (interactive)
   (shell-command (concat "cuts run errors " (bui-list-current-id))))
 
