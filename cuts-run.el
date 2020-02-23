@@ -127,14 +127,38 @@
           (shell-command (concat "cuts results combine " cpar)))
         (revert-buffer nil t))))
 
+;; this definition works but it's a blocking process so i commented off
+;; and leave it here for future reference
+;; (defun cuts-run->postprocess ()
+;;   (interactive)
+;;   (if (y-or-n-p "Are you sure you want to run postprocessing on the selected tag(s)?")
+;;       (progn
+;;         (dolist (cpar (or (bui-list-get-marked-id-list)
+;;                           (list (bui-list-current-id))))
+;;           (let ((cutdir (file-name-directory cpar)))
+;;             (shell-command (concat "cd " cutdir "; cutspipe post.ini")))))))
+
+
+;; Note the use of with-current-buffer here, without which the
+;; bui-list-* commands will not be able to get the selection because i
+;; will have moved away from the bui buffers, with-current-buffer
+;; makes sure that i always come back to the original buffer after
+;; running the commands in its body
 (defun cuts-run->postprocess ()
+  "Run postprocess on the selected tags in an eshell"
   (interactive)
   (if (y-or-n-p "Are you sure you want to run postprocessing on the selected tag(s)?")
       (progn
+        (with-current-buffer (get-buffer-create "*Cuts Shell*")
+          (switch-to-buffer-other-window "*Cuts Shell*")
+          (eshell-mode))
         (dolist (cpar (or (bui-list-get-marked-id-list)
                           (list (bui-list-current-id))))
           (let ((cutdir (file-name-directory cpar)))
-            (shell-command (concat "cd " cutdir "; cutspipe post.ini")))))))
+            (with-current-buffer "*Cuts Shell*"
+              (insert (concat "cd " cutdir "; cutspipe post.ini; ")))))
+        (with-current-buffer "*Cuts Shell*"
+          (eshell-send-input)))))
 
 ;;;###autoload
 (defun cuts-run-show-tags ()
