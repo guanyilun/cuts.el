@@ -64,10 +64,12 @@
   (define-key map (kbd "c")   'cuts-run->combine-jobs)
   (define-key map (kbd "e")   'cuts-run->switch-to-eshell)
   (define-key map (kbd "E")   'cuts-run->show-errors)
+  (define-key map (kbd "L")   'cuts-run->show-logs)
   (define-key map (kbd "o")   'cuts-run->switch-to-cutparam)
   (define-key map (kbd "O")   'cuts-run->switch-to-cutParam)
   (define-key map (kbd "F")   'cuts-run->postprocess)
-  (define-key map (kbd "f")   'cuts-run->switch-to-post-ini))
+  (define-key map (kbd "f")   'cuts-run->switch-to-post-ini)
+  (define-key map (kbd "1")   'delete-other-windows))
 
 ;;; interactive functions
 (defun cuts-run->switch-to-cutparam ()
@@ -110,11 +112,20 @@
          (target (concat basedir "/post.ini")))
     (find-file target)))
 
-
 (defun cuts-run->show-errors ()
   "Show errors in the slurm logs"
   (interactive)
   (shell-command (concat "cuts run errors " (bui-list-current-id))))
+
+(defun cuts-run->show-logs ()
+  "Show live logs in the slurm logs in an eshell buffer"
+  (interactive)
+  (let* ((cpar (bui-list-current-id))
+         (cpar_dir (file-name-directory cpar))
+         (default-directory cpar_dir))
+    (eshell)
+    (insert (concat "cuts run logs " cpar))
+    (eshell-send-input)))
 
 (defun cuts-run->promote-version ()
   "Promote param version of selected tag"
