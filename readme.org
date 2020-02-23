@@ -23,6 +23,20 @@ manage cuts parameters
 - e: view errors in the run
 - F: run default postprocessing
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_3.png]]
+*** cuts-post 
+Prompts modules used in post-processing for easier selection. 
+- c-c m: activate the prompt
+
+[[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_4.png]]
+
+This is based on helm so it follows the short-cuts helm, for example:
+- enter: insert modules at the end of module list
+- m-a: select all modules
+- c-s-spc: mark one module
+- f1: insert marked modules
+- f2: update marked modules
+- c-z: show actions available (insert/update)
+
 *** Other shortcuts that work for all of them
 - h: help
 - m: mark selections
@@ -40,13 +54,19 @@ Suppose you placed this repo at =~/.emacs.d/site-lisp/cuts.el/=, add these to yo
 (require 'cuts-slurm)
 (require 'cuts-depot)
 (require 'cuts-run)
+(require 'cuts-post)
 
 (bind-key "<f7>" 'cuts-run-show-tags)
 (bind-key "<f8>" 'cuts-slurm-show-jobs)
 (bind-key "<f9>" 'cuts-depot-show-tags) 
+
+;; bind cuts post-processing plugin to conf-mode                                                                                                                                                                                        
+(require 'conf-mode)                                                                                                                                                                                                                    
+(define-key conf-mode-map (kbd "C-c m") 'cuts-post-modules-helm) 
 #+END_SRC
 
 ** Dependencies
 - =bui.el=
 - =dash.el=
 - =s.el=
+- =helm.el=
