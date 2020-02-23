@@ -16,12 +16,18 @@ manage cuts parameters
 - enter: visit the cutparam folder
 - o: visit cutparam file
 - O: visit cutParam file
+- [: visit run_v? directory
 - x: remove selected cut parameter version
 - P: promote the cut parameter to new version
 - S: submit slurm jobs
 - c: combine sub-job results
-- e: view errors in the run
+- e: open directory in eshell
+- E: view errors in the run
+- f: visit post.ini file
 - F: run default postprocessing
+- L: show live slurm logs
+- 1: delete other windows
+
 [[https://raw.githubusercontent.com/guanyilun/cuts.el/master/assets/screenshot_3.png]]
 *** cuts-post 
 Prompts modules used in post-processing for easier selection. 
