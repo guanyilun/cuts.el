@@ -25,13 +25,10 @@
 (require 's)
 (require 'bui)
 
-;;; user defined parameters
-(setq slurm-user "yilung")
-
 ;; command to see your jobs
 (setq slurm-jobs-command
       (concat "squeue -u "
-              slurm-user
+              (user-real-login-name)
               " | awk '{print $1,$2,$3,$4,$5,$6,$7,$8}'"))
 
 ;; if you want to see all jobs instead
