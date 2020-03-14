@@ -75,7 +75,8 @@
 
 ;; define keymap
 (let ((map cuts-slurm-list-mode-map))
-  (define-key map (kbd "x") 'cuts-slurm->kill-jobs))
+  (define-key map (kbd "x") 'cuts-slurm->kill-jobs)
+  (define-key map (kbd "i") 'cuts-slurm->check-idle))
 
 ;;; interactive functions
 ;; list all tags
@@ -94,6 +95,12 @@
                          (list (bui-list-current-id))))
           (kill-slurm-job job))
         (revert-buffer nil t))))
+
+;; get idle information
+(defun cuts-slurm->check-idle ()
+  (interactive)
+  (shell-command "sinfo | grep idle"))
+
 
 (provide 'cuts-slurm)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

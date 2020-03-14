@@ -85,7 +85,8 @@
 ;; definition of 'cuts 'list
 (let ((map cuts-depot-list-mode-map))
   (define-key map (kbd "RET") 'cuts-depot->switch-to-folder)
-  (define-key map (kbd "x")   'cuts-depot->kill-tags))
+  (define-key map (kbd "x")   'cuts-depot->kill-tags)
+  (define-key map (kbd "a")   'cuts-depot->archive-tags))
 
 ;;; interactive functions
 ;; list all tags
@@ -113,16 +114,17 @@
 ;; archive marked tags or the current tag into tar.gz
 (defun cuts-depot->archive-tags ()
   (interactive)
-  (let* ((tag (or (bui-list-get-marked-id-list)
-                  (list (bui-list-current-id))))
-         (output-name (bui-assoc-value
-                       (car (bui-entries-by-ids
-                             (bui-current-entries) tag))
-                       'tag)))
-    (shell-command (concat
-                    "tar -czvf " depot "/"
-                    output-name ".tar.gz "
-                    (s-join " " tag)))))
+  (if (y-or-n-p "Are you sure you want to archive the selected tag(s)?")
+      (let* ((tag (or (bui-list-get-marked-id-list)
+                      (list (bui-list-current-id))))
+             (output-name (bui-assoc-value
+                           (car (bui-entries-by-ids
+                                 (bui-current-entries) tag))
+                           'tag)))
+        (shell-command (concat
+                        "tar -czvf " depot "/"
+                        output-name ".tar.gz "
+                        (s-join " " tag))))))
 
 (provide 'cuts-depot)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
