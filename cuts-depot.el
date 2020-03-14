@@ -71,6 +71,11 @@
   (interactive)
   (dired (bui-list-current-id)))
 
+;; switch to folder
+(defun cuts-depot->switch-to-root ()
+  (interactive)
+  (dired depot))
+
 ;; kill marked tags or the current tag
 (defun cuts-depot->kill-tags ()
   (interactive)
@@ -85,6 +90,7 @@
 ;; definition of 'cuts 'list
 (let ((map cuts-depot-list-mode-map))
   (define-key map (kbd "RET") 'cuts-depot->switch-to-folder)
+  (define-key map (kbd "r")   'cuts-depot->switch-to-root)
   (define-key map (kbd "x")   'cuts-depot->kill-tags)
   (define-key map (kbd "a")   'cuts-depot->archive-tags))
 
@@ -121,10 +127,10 @@
                            (car (bui-entries-by-ids
                                  (bui-current-entries) tag))
                            'tag)))
-        (shell-command (concat
-                        "tar -czvf " depot "/"
-                        output-name ".tar.gz "
-                        (s-join " " tag))))))
+        (async-shell-command (concat
+                              "tar -czvf " depot "/"
+                              output-name ".tar.gz "
+                              (s-join " " tag))))))
 
 (provide 'cuts-depot)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
