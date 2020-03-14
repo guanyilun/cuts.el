@@ -24,10 +24,12 @@
 
 (require 'dash)
 (require 'bui)
+(require 's)
 
 ;;; user defined parameters
 ;; define depot
-(setq depot "/scratch/gpfs/yilung/depot/")
+(setq depot (getenv "CUTS_DEPOT"))
+
 ;; define categories of output of interests
 (setq categories '("Calibration" "Pathologies" "Postprocess" "SelectedTODs" "TODCuts" "darkDets"))
 
@@ -107,6 +109,20 @@
                          (list (bui-list-current-id))))
           (delete-directory tag t))
         (revert-buffer nil t))))
+
+;; archive marked tags or the current tag into tar.gz
+(defun cuts-depot->archive-tags ()
+  (interactive)
+  (let* ((tag (or (bui-list-get-marked-id-list)
+                  (list (bui-list-current-id))))
+         (output-name (bui-assoc-value
+                       (car (bui-entries-by-ids
+                             (bui-current-entries) tag))
+                       'tag)))
+    (shell-command (concat
+                    "tar -czvf " depot "/"
+                    output-name ".tar.gz "
+                    (s-join " " tag)))))
 
 (provide 'cuts-depot)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
