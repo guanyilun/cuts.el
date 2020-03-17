@@ -128,7 +128,7 @@
                                  (bui-current-entries) tag))
                            'tag)))
         (async-shell-command (concat
-                              "tar -czvf " depot "/"
+                              "tar -czvf " depot "/archive/"
                               output-name ".tar.gz "
                               (s-join " " tag))))))
 

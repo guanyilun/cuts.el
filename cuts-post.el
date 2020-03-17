@@ -42,7 +42,12 @@
                           "plot_live_fraction"
                           "plot_rms_gain"
                           "report"
-                          "export_json"))
+                          "export_json"
+                          "plot_resp_hist"
+                          "generate_h5"
+                          "debug_patho"
+                          "model_to_cuts"
+                          ))
 
 (defun cuts-post->insert-modules (candidate)
   "Insert modules at the end of the current module list"

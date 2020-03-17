@@ -155,7 +155,7 @@
       (progn
         (dolist (cpar (or (bui-list-get-marked-id-list)
                           (list (bui-list-current-id))))
-          (shell-command (concat "cuts run submit " cpar)))
+          (shell-command (concat "cuts submit run " cpar)))
         (revert-buffer nil t))))
 
 (defun cuts-run->combine-jobs ()
